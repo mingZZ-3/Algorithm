@@ -23,3 +23,21 @@ def solution(progresses, speeds):
             answer.append(cnt)
 
     return answer
+
+# ===== #2
+def solution(priorities, location):
+    queue = [(i, p) for i, p in enumerate(priorities)]
+    cnt = 0
+
+    while True:
+        try:
+            tmp = queue.pop(0)
+            if any(tmp[1] < q[1] for q in queue):
+                queue.append(tmp)
+            else:
+                cnt += 1
+                if tmp[0] == location:
+                    break
+        except IndexError:
+            break
+    return cnt
