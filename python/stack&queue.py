@@ -41,3 +41,28 @@ def solution(priorities, location):
         except IndexError:
             break
     return cnt
+
+# ===== #3
+bridge_length = 2
+weight = 10
+truck_weights = [7,4,5,6]
+
+def solution(bridge_length, weight, truck_weight):
+    bridge = []
+    tmp = 0
+    time = 0
+    weightOnBridge = 0
+
+    while True:
+        try:
+            tmp = truck_weight.pop(0)
+
+            if (tmp+weightOnBridge) <= weight:
+                bridge.append(tmp)
+                weightOnBridge += tmp
+
+            else:
+
+
+        except IndexError:
+            continue
