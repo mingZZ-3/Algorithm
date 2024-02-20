@@ -1,31 +1,31 @@
 # 1 - 음료수 얼려 먹기 (DFS)
-# def dfs(x, y):
-#     # 주어진 범위를 넘어가는 경우
-#     if  x < 0 or x >= n or y < 0 or y >= m:
-#         return False
-#     elif graph[x][y] == 0:
-#         graph[x][y] = 1
-#         dfs(x - 1, y) # 상
-#         dfs(x + 1, y) # 하
-#         dfs(x, y - 1) # 좌
-#         dfs(x, y + 1) # 우
-#         return True
-#     else:
-#         return False
-#
-# n , m = map(int, input().split())
-#
-# graph = []
-# for i in range(n):
-#     graph.append(list(map(int, input())))
-#
-# result = 0
-# for i in range(n):
-#     for j in range(m):
-#         if dfs(i, j) == True:
-#             result += 1
-#
-# print(result)
+def dfs(x, y):
+    # 주어진 범위를 넘어가는 경우
+    if  x < 0 or x >= n or y < 0 or y >= m:
+        return False
+    elif graph[x][y] == 0:
+        graph[x][y] = 1
+        dfs(x - 1, y) # 상
+        dfs(x + 1, y) # 하
+        dfs(x, y - 1) # 좌
+        dfs(x, y + 1) # 우
+        return True
+    else:
+        return False
+
+n , m = map(int, input().split())
+
+graph = []
+for i in range(n):
+    graph.append(list(map(int, input())))
+
+result = 0
+for i in range(n):
+    for j in range(m):
+        if dfs(i, j) == True:
+            result += 1
+
+print(result)
 
 # 2 - 미로 탈출
 from collections import deque
