@@ -70,8 +70,6 @@ n, m = map(int, input().split())
 start = int(input())
 # 각 노드에 연결되어 있는 노드에 대한 정보를 담는 리스트 생성
 graph = [[] for i in range(n+1)]
-# 방문한 적 있는지 체크
-visited = [False] * (n + 1)
 # 최단 거리 테이블을 모두 무한으로 초기화
 distance = [INF] * (n + 1)
 
