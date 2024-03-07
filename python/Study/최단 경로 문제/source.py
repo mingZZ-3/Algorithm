@@ -94,7 +94,7 @@ def dijkstra_heap(start):
         for i in graph[now]:
             cost = dist + i[1]
             if cost < distance[i[0]]:
-                distance[0] = cost
+                distance[i[0]] = cost
                 heapq.heappush(q, (cost, i[0]))
 
 dijkstra_heap(start)
