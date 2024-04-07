@@ -15,7 +15,7 @@
     '''
 
 3. 삽입 정렬
-    - 처리되지 않은 데이터를 하니씩 고랄 적절한 위치에 삽입
+    - 처리되지 않은 데이터를 하니씩 골라 적절한 위치에 삽입
     - 선택 정렬보다 효율적
     - 시간 복잡도 : O(N^2), 공간 복잡도 : O(N)
     '''
@@ -47,7 +47,7 @@
                 right -= 1
             if (left > right): # 엇갈렸다면 작은 데이터와 피벗을 교체
                 array[right], array[pivot] = array[pivot], array[right]
-+            else: # 엇갈리지 않았다면 작은 데이터와 큰 데이터를 교체
+            else: # 엇갈리지 않았다면 작은 데이터와 큰 데이터를 교체
                 array[left], array[right] = array[right], array[left]
         quick_sort(array, start, pivot-1)
         quick_sort(array, pivot+1, end)
@@ -78,3 +78,14 @@
         for j in range(count[i]):
             print(i, end="")
     '''
+
+6. 버블 정렬
+'''
+def Bubblesort(List): #정렬할 list, 원소 수 N
+    global cnt
+    for i in range(len(List)-1, 0, -1) : # 범위의 끝
+        for j in range(i) :
+            if List[j] > List[j+1] : #현재 항이 다음 항보다 클 경우
+                List[j], List[j+1] = List[j+1], List[j] #서로의 위치를 바꿔라
+                cnt += 1
+'''
