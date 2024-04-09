@@ -11,16 +11,23 @@ def solution(jobs):
     while jobs:
         wait_list = []
         for i in range(len(jobs)):
-            a, b = map(int, jobs[i])
-            if a <= now:
-                wait_list.append([i, b])
+            time, length = map(int, jobs[i])
+            if time <= now:
+                wait_list.append([i, length])
 
-        if len(wait_list) > 0:
+        if len(wait_list) == 1:
+            time, length = map(int, jobs.pop(wait_list[0][0]))
+            cnt += (now - time) + length
+            now += length
+        elif len(wait_list) > 0:
+            # 작업 가능한 것 중 시간이 가장 짧은 것 하나 실행
             wait_list.sort(key = lambda x:x[1])
             time, length = map(int, jobs.pop(wait_list[0][0]))
             cnt += (now - time) + length
             now += length
         else:
+            # 현재 작업 가능한 것이 없는 경우,
+            # 가장 먼저 있는 작업을 실행
             time, length = map(int, heapq.heappop(jobs))
             now = time
             cnt += (now - time) + length
