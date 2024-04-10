@@ -1,11 +1,8 @@
 def solution(sizes):
     w, h = 0, 0
-    for i in sizes:
-        x, y = map(int, i)
+    for x, y in sizes:
         if y > x:
-            w = max(w, y)
-            h = max(h, x)
-        else:
-            w = max(w, x)
-            h = max(h, y)
+            x, y = y, x
+        w = max(w, x)
+        h = max(h, y)
     return w * h
