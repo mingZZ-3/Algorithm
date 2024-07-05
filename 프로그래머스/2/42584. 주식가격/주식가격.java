@@ -1,18 +1,28 @@
+import java.util.*;
+
 class Solution {
     public int[] solution(int[] prices) {
-        int[] answer = new int[prices.length];
+       int[] result = new int[prices.length];
+        Queue<Integer> q = new ArrayDeque<>();
+        for (int i = 0; i < prices.length; i++) {
+            q.add(prices[i]);
+        }
         
-        for(int i = 0; i < prices.length; i++) {
-            int cnt = 0;
-            for(int j = i + 1; j < prices.length; j++) {
-                cnt++;
-                if(prices[i] > prices[j]) {
+        int idx = 0;
+        while (q.peek() != null) {
+            int price = q.poll();
+            result[idx] = 0;
+
+            for (Integer nextPrice : q) {
+                result[idx]++;
+                if (price > nextPrice) {
                     break;
                 }
             }
-            answer[i] = cnt;
+
+            idx++;
         }
-        
-        return answer;
+
+        return result;
     }
 }
