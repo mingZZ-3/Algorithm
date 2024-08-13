@@ -29,12 +29,10 @@ class Solution {
         // S -> L
         sl = BFS(s, l);
         if (sl == -1) return -1;
-        System.out.println(sl);
         
         // L -> E
         le = BFS(l, e);
         if (le == -1) return -1;
-        System.out.println(le);
         
         return sl + le;
     }
