@@ -60,7 +60,7 @@ public class Main {   // 최단경로 - 방향그래프/가중치o
             if (now.c > costs[now.v]) continue;
 
             for (Edge next : graph.get(now.v)) {
-                int newCost = costs[now.v] + next.c;
+                int newCost = now.c + next.c;
                 if (newCost < costs[next.v]) {
                     q.add(new Edge(next.v, newCost));
                     costs[next.v] = newCost;
