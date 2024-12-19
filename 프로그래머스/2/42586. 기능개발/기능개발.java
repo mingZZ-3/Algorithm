@@ -1,38 +1,35 @@
 import java.util.*;
 
 class Solution {
-    public int[] solution(int[] progresses, int[] speeds) {
-        List<Integer> result = new ArrayList<>();
-        Queue<Integer> queue = new LinkedList<>();
-
-        for (int i = 0; i < progresses.length; i++) {
-            int workday = (100 - progresses[i]) / speeds[i];
-            if ((100 - progresses[i]) % speeds[i] != 0) {
+    public int[] solution(int[] progress, int[] speeds) {
+        List<Integer> cnts = new ArrayList<>();
+        Queue<Integer> que = new ArrayDeque<>();
+        
+        for (int i=0; i<progress.length; i++) {
+            int workday = (100 - progress[i])/speeds[i];
+            if ((100 - progress[i])%speeds[i] != 0)
                 workday++;
-            }
-            queue.add(workday);
+            que.add(workday);
         }
-
-        int top = queue.poll();
-        int cnt = 1;
-        while (!queue.isEmpty()) {
-            int nextwork = queue.peek();
-
-            if (nextwork > top) {
-                result.add(cnt);
-
-                cnt = 1;
-                top = queue.poll();
+        
+        int idx = 0;
+        while(!que.isEmpty()) {
+            int top = que.remove();
+            int cnt = 1;
             
-            } else {
-                queue.poll();
+            while (!que.isEmpty() && que.peek() <= top) {
+                que.remove();
                 cnt++;
             }
+            
+            cnts.add(cnt);
         }
-        result.add(cnt);
-
-        int[] res = result.stream().mapToInt(i->i).toArray();
-
-        return res;
+        
+        int[] answer = new int[cnts.size()];
+        for (int i=0; i<cnts.size(); i++) {
+            answer[i] = cnts.get(i);
+        }
+        
+        return answer;
     }
 }
