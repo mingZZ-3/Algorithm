@@ -4,46 +4,43 @@ import java.util.stream.Collectors;
 class Solution {
     public int solution(String s) {
         int result = s.length();
-        for (int i = 1; i <= s.length()/2; i++) {
-            List<String> arrays = new ArrayList<>();
-            for (int j = 0; j < s.length(); j += i) {
-                arrays.add(s.substring(j, Math.min(s.length(), j+i)));
+        
+        for (int l=1; l <= s.length()/2; l++) {
+            List<String> words = new ArrayList<>();
+            for (int i=0; i<s.length(); i += l) {
+                words.add(s.substring(i, Math.min(i+l, s.length())));
             }
-            Stack<SData> stack = new Stack<>();
-            String prev = "";
-            for (String str : arrays) {
-                if (prev.equals(str)) {
-                    SData sData = stack.pop();
-                    stack.push(new SData(sData.cnt + 1, sData.word));
+            
+            Deque<Entry> stack = new ArrayDeque<>();
+            stack.push(new Entry(words.get(0), 1));
+            for (String w : words.subList(1, words.size())) {
+                if (stack.peek().word.equals(w)) {
+                    Entry top = stack.pop();
+                    stack.push(new Entry(top.word, top.cnt+1));
                 } else {
-                    prev = str;
-                    stack.push(new SData(1, str));
+                    stack.push(new Entry(w, 1));
                 }
             }
-            String newWord = stack.stream().map(SData::toString).collect(Collectors.joining());
-            result = Math.min(result, newWord.length());
+            
+            String compressed = stack.stream().map(Entry::toString).collect(Collectors.joining());
+            result = Math.min(compressed.length(), result);
         }
-
+        
         return result;
     }
     
-    static class SData {
-        int cnt;
+    class Entry {
         String word;
-
-        public SData(int cnt, String word) {
-            this.cnt = cnt;
-            this.word = word;
+        int cnt;
+        
+        public Entry(String w, int c) {
+            this.word = w;
+            this.cnt = c;
         }
-
+        
         @Override
         public String toString() {
-            final StringBuilder sb = new StringBuilder();
-            if (cnt == 1)
-                sb.append(word);
-            else
-                sb.append(cnt).append(word);
-            return sb.toString();
+            return (cnt == 1) ? word : cnt + word; 
         }
     }
 }
