@@ -5,16 +5,15 @@ class Solution {
         Queue<Node> que = new ArrayDeque<>();
         boolean[] visited = new boolean[words.length];
         
-        que.add(new Node(0, begin));
-        
+        que.add(new Node(begin, 0));
         while(!que.isEmpty()) {
-            Node node  = que.remove();
+            Node node = que.remove();
             if (node.word.equals(target)) return node.cnt;
             
-            for (int i=0; i < words.length; i++) {
+            for (int i=0; i<words.length; i++) {
                 if (!visited[i] && isOneDiff(node.word, words[i])) {
                     visited[i] = true;
-                    que.add(new Node(node.cnt + 1, words[i]));
+                    que.add(new Node(words[i], node.cnt + 1));
                 }
             }
         }
@@ -22,20 +21,21 @@ class Solution {
         return 0;
     }
     
-    public boolean isOneDiff(String a, String target) {
-        int diffCount = 0;
+    public boolean isOneDiff(String a, String b) {
+        int diff = 0;
         
-        for (int i = 0; i < a.length(); i++) {
-            if (a.charAt(i) != target.charAt(i)) diffCount++;
+        for (int i=0; i<a.length(); i++) {
+            if (a.charAt(i) != b.charAt(i)) diff++;
         }
-        return diffCount == 1? true : false;
+        
+        return diff == 1? true : false;
     }
     
-    class Node{
+    class Node {
         int cnt;
         String word;
         
-        public Node(int cnt, String word) {
+        public Node(String word, int cnt) {
             this.cnt = cnt;
             this.word = word;
         }
