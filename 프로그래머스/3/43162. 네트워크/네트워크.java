@@ -1,28 +1,26 @@
-import java.util.*;
-
 class Solution {
     boolean[] visited;
     
     public int solution(int n, int[][] computers) {
-        int cnt = 0;
-        visited = new boolean[n];
+        int answer = 0;
         
-        for (int i=0; i < n; i++) {
+        visited = new boolean[n];
+        for (int i=0; i<n; i++) {
             if (visited[i]) continue;
             
-            DFS(computers, n, i);
-            cnt++;
+            DFS(i, computers);
+            answer++;
         }
         
-        return cnt;
+        return answer;
     }
     
-    public void DFS(int[][] computers, int n, int node) {
-        visited[node] = true;
+    public void DFS(int idx, int[][] computers) {
+        visited[idx] = true;
         
-        for (int j=0; j < n; j++) {
-            if (!visited[j] && computers[node][j] == 1) {
-                DFS(computers, n, j);
+        for (int i=0; i<computers.length; i++) {
+            if (computers[idx][i] == 1 && !visited[i]) {
+                DFS(i, computers);
             }
         }
     }
