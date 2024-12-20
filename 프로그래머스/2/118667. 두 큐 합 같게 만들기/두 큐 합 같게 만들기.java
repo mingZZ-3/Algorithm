@@ -1,44 +1,45 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int[] queue1, int[] queue2) {
+    public int solution(int[] que1, int[] que2) {
         int cnt = 0;
-        long sum1 = Arrays.stream(queue1).sum();
-        long sum2 = Arrays.stream(queue2).sum();
-        int max = (queue1.length + queue2.length) * 2;
-
-        Queue<Integer> q1 = new ArrayDeque<>();
-        Queue<Integer> q2 = new ArrayDeque<>();
+        long sum1 = Arrays.stream(que1).sum();
+        long sum2 = Arrays.stream(que2).sum();
+        int max = que1.length * 3;
         
-        for (int i = 0; i < queue1.length; i++) {
-            q1.add(queue1[i]);
+        if ((sum1 + sum2) % 2 != 0) return -1;
+        
+        Queue<Integer> q1 = new ArrayDeque<>();
+        for (int n : que1) {
+            q1.add(n);
         }
-        for (int i = 0; i < queue2.length; i++) {
-            q2.add(queue2[i]);
+        Queue<Integer> q2 = new ArrayDeque<>();
+        for (int n : que2) {
+            q2.add(n);
         }
-
-        while (true) {
-            if (sum1 == sum2)
-                break;
+        
+        while(true) {
+            if (sum1 == sum2) break;
+            
             if (cnt > max) {
                 cnt = -1;
                 break;
             }
-
+            
             if (sum1 > sum2) {
-                int top = q1.poll();
-                sum1 -= (long) top;
-                q2.add(top);
-                sum2 += (long) top;
-            } else if (sum2 > sum1) {
-                int top = q2.poll();
-                sum2 -= (long) top;
-                q1.add(top);
-                sum1 += (long) top;
+                int num = q1.poll();
+                sum1 -= num;
+                q2.add(num);
+                sum2 += num;
+            } else {
+                int num = q2.poll();
+                sum2 -= num;
+                q1.add(num);
+                sum1 += num;
             }
             cnt++;
         }
-
+        
         return cnt;
     }
 }
