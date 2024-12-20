@@ -1,25 +1,21 @@
 class Solution {
-    static boolean[] visited;
-    static int cnt;
-
-    public static int solution(int k, int[][] dungeons) {
-        cnt = 0;
-        visited = new boolean[dungeons.length];
-
-        dfs(0, k, dungeons);
-
-        return cnt;
+    int answer = 0;
+    
+    public int solution(int k, int[][] dungeons) {
+        backtrack(k, dungeons, 0, new boolean[dungeons.length]);
+        return answer;
     }
-
-    private static void dfs(int depth, int k, int[][] dungeons) {
-        for (int i = 0; i < dungeons.length; i++) {
-            if (visited[i] || dungeons[i][0] > k) {
-                continue;
+    
+    public void backtrack(int k, int[][] dungeons, int cnt, boolean[] visited) {
+        if (cnt > answer)
+            answer = cnt;
+        
+        for (int i=0; i<dungeons.length; i++) {
+            if (!visited[i] && k >= dungeons[i][0]) { // 던전에 들어갈 수 있으면
+                visited[i] = true;
+                backtrack(k - dungeons[i][1], dungeons, cnt + 1, visited);
+                visited[i] = false;
             }
-            visited[i] = true;
-            dfs(depth + 1, k - dungeons[i][1], dungeons);
-            visited[i] = false;
         }
-        cnt = Math.max(cnt, depth);
     }
 }
