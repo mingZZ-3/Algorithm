@@ -1,59 +1,46 @@
 import java.util.*;
 
 class Solution {
-    // 동, 서, 남, 북
-    List<Integer> dirX = new ArrayList<>(Arrays.asList(0, 0, 1, -1));
-    List<Integer> dirY = new ArrayList<>(Arrays.asList(1, -1, 0, 0));
-    int[][] visited;
+    
+    int[] dirR = {0, 0, -1, 1};
+    int[] dirC = {-1, 1, 0, 0};
     
     public int solution(int[][] maps) {
+        int answer = -1;
         int n = maps.length;
         int m = maps[0].length;
         
-        visited = new int[n][m];
-        for (int i=0; i < n; i++) {
-            for (int j=0; j < m; j++) {
-                visited[i][j] = -1;
-            }
-        }
-        
         // BFS
-        Queue<Pos> que = new ArrayDeque<>();
-        que.add(new Pos(0,0));
+        boolean[][] visited = new boolean[n][m];
+        Queue<int[]> que = new ArrayDeque<>();
+        que.add(new int[]{0, 0, 1});
+        visited[0][0] = true;
         
-        visited[0][0] = 1;
         while(!que.isEmpty()) {
-            Pos now = que.remove();
+            int[] top = que.remove();
             
-            // 동서남북 이동
-            for (int i=0; i < 4; i++) {
-                int tmpX = now.x + dirX.get(i);
-                int tmpY = now.y + dirY.get(i);
+            if (top[0] == n-1 && top[1] == m-1) {
+                answer = top[2];
+                break;
+            }
+            
+            for (int i=0; i<4; i++) {
+                int newR = top[0] + dirR[i];
+                int newC = top[1] + dirC[i];
                 
-                if (tmpX < 0 || tmpX >= n || tmpY < 0 || tmpY >= m) // 미로에서 벗어남
-                    continue;
-                
-                // 갈 수 있는 길인가
-                // + 방문했던 경우, min 값일때 Que에 넣음
-                if (maps[tmpX][tmpY] == 1) {    // 길 있음
-                    if (visited[tmpX][tmpY] == -1 
-                        || visited[tmpX][tmpY] > visited[now.x][now.y] + 1) {    // 방문한적 없음 or 값이 더 작을 때
-                        visited[tmpX][tmpY] = visited[now.x][now.y] + 1;
-                        que.add(new Pos(tmpX, tmpY));
+                if (inRange(newR, newC, n, m) && maps[newR][newC] == 1) {
+                    if (!visited[newR][newC]) {
+                        que.add(new int[]{newR, newC, top[2] + 1});
+                        visited[newR][newC] = true; 
                     }
                 }
             }
         }
         
-        return visited[n-1][m-1];
+        return answer;
     }
-    
-    class Pos{
-        int x, y;
-        
-        public Pos(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
+
+    public boolean inRange(int r, int c, int n, int m) {
+        return (r >= 0) && (c >= 0) && (r < n) && (c < m);
     }
 }
