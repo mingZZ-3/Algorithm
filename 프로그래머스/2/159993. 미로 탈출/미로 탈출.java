@@ -1,80 +1,71 @@
 import java.util.*;
 
 class Solution {
-    int[] distX = {0, 0, 1, -1};
-    int[] distY = {1, -1, 0, 0};
-    int sl = 0, le = 0;
-    int n , m;
-    boolean[][] visited;
-    char[][] map;
+    char[][] graph;
+    int R, C;
+    int[] S, E, L;
     
     public int solution(String[] maps) {
-        n = maps.length;
-        m = maps[0].length();
-        map = new char[n][m];
-        Node s = null, l = null, e = null;
+        R = maps.length;
+        C = maps[0].length();
         
-        for (int i=0; i < maps.length; i++) {
-            map[i] = maps[i].toCharArray();
-            for (int j=0; j <maps[0].length(); j++) {
-                if (maps[i].charAt(j) == 'S')
-                    s = new Node(i, j, 0); 
-                else if (maps[i].charAt(j) == 'L')
-                    l = new Node(i, j, 0);
-                else if (maps[i].charAt(j) == 'E')
-                    e = new Node(i, j, 0);
+        graph = new char[R][C];
+        for (int i=0; i < R; i++) {
+            for (int j=0; j < C; j++) {
+                graph[i][j] = maps[i].charAt(j);
+
+                if (graph[i][j] == 'S') {
+                    S = new int[]{i, j};
+                } else if (graph[i][j] == 'E') {
+                    E = new int[]{i, j};
+                } else if (graph[i][j] == 'L') {
+                    L = new int[]{i, j};
+                }
             }
         }
         
-        // S -> L
-        sl = BFS(s, l);
+        // s -> l
+        int sl = BFS(S, L);
         if (sl == -1) return -1;
         
-        // L -> E
-        le = BFS(l, e);
+        // l -> e
+        int le = BFS(L, E);
         if (le == -1) return -1;
         
         return sl + le;
     }
     
-    int BFS(Node start, Node target) {
-        visited = new boolean[n][m];
-        Queue<Node> que = new ArrayDeque<>();
-        que.add(start);
+    int[] dirR = {1, -1, 0, 0};
+    int[] dirC = {0, 0, 1, -1};
+    
+    public int BFS(int[] s, int[] e) {
+        Queue<int[]> que = new ArrayDeque<>();
+        boolean[][] visited = new boolean[R][C];
+        que.add(new int[]{s[0], s[1], 0});
+        visited[s[0]][s[1]] = true;
         
-        visited[start.x][start.y] = true;
         while(!que.isEmpty()) {
-            Node now = que.remove();
+            int[] top = que.poll();
             
-            // 현재 위치에서 상하좌우로 이동
+            if (top[0] == e[0] && top[1] == e[1]) return top[2];
+            
             for (int i=0; i < 4; i++) {
-                int nx = now.x + distX[i];
-                int ny = now.y + distY[i];
+                int nr = top[0] + dirR[i];
+                int nc = top[1] + dirC[i];
                 
-                if (InRange(nx, ny) 
-                    && !visited[nx][ny] && map[nx][ny] != 'X') {
-                    if (nx == target.x && ny == target.y) // 목적지에 도착
-                        return now.time + 1;
-                    
-                    visited[nx][ny] = true;
-                    que.add(new Node(nx, ny, now.time + 1));
+                if (inRange(nr, nc) && graph[nr][nc] != 'X') {
+                    if (!visited[nr][nc]) {
+                        visited[nr][nc] = true;
+                        que.add(new int[]{nr, nc, top[2] + 1});
+                    }
                 }
             }
         }
-        return -1;
-    }
-    
-    boolean InRange(int x, int y) {
-        return (x >= 0) && (x < n) && (y >= 0) && (y < m);
-    }
-    
-    class Node {
-        int x, y, time;
         
-        Node(int x, int y, int time) {
-            this.x = x;
-            this.y = y;
-            this.time = time;
-        }
+        return -1;
+    } 
+    
+    public boolean inRange(int r, int c) {
+        return (r >= 0) && (c >= 0) && (r < R) && (c < C);
     }
 }
